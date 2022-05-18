@@ -272,10 +272,236 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 12,
    "metadata": {},
    "outputs": [],
-   "source": []
+   "source": [
+    "def met(*args, **kwargs):\n",
+    "    for i in args:\n",
+    "        print(i)\n",
+    "    for i,j in kwargs.items():\n",
+    "        print(i,j)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1\n",
+      "2\n",
+      "3\n",
+      "Hello\n",
+      "True\n",
+      "name Claus\n",
+      "age 12\n"
+     ]
+    }
+   ],
+   "source": [
+    "met(1, 2, 3, 'Hello', True, name='Claus', age=12)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def compute():\n",
+    "    for i in [1, 2, 3, 4]:\n",
+    "        yield i"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<generator object compute at 0x7ff854c397b0>"
+      ]
+     },
+     "execution_count": 52,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "compute()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for i in x:\n",
+    "    print(i)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x = ( i  for i in range(5)     )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0\n",
+      "1\n",
+      "2\n",
+      "3\n",
+      "4\n"
+     ]
+    }
+   ],
+   "source": [
+    "for i in x:\n",
+    "    print(i)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Context managers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 81,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "class Openfile:\n",
+    "    def __init__(self, *args):\n",
+    "        self.file = args[0]\n",
+    "        self.mode = args[1]\n",
+    "    \n",
+    "    def __enter__(self):\n",
+    "        self.file = open(self.file, self.mode)\n",
+    "        return self.file\n",
+    "    \n",
+    "    def __exit__(self, *args):\n",
+    "        self.file.close()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "khjakjsdfhdkja\n",
+      "lfkjdhsakjh\n",
+      "kldsjfahdkjsfha\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "with Openfile('Test.txt', 'r') as f:\n",
+    "    print(f.read())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "khjakjsdfhdkja\n",
+      "lfkjdhsakjh\n",
+      "kldsjfahdkjsfha\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "from contextlib import contextmanager\n",
+    "\n",
+    "@contextmanager\n",
+    "def open_file(filename, mode):\n",
+    "    f = open(filename, mode)\n",
+    "    try:\n",
+    "        yield f\n",
+    "    finally:\n",
+    "        f.close()\n",
+    "\n",
+    "\n",
+    "with open_file('Test.txt', 'r') as f:\n",
+    "    print(f.read())\n",
+    "\n",
+    "    \n",
+    "    \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 85,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "contextlib._GeneratorContextManager"
+      ]
+     },
+     "execution_count": 85,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "type(open_file('Test.txt', 'r'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'contextlib' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-86-e62c27fd0057>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mhelp\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcontextlib\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m: name 'contextlib' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "help(contextlib)"
+   ]
   },
   {
    "cell_type": "code",
